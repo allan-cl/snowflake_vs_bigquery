@@ -1,5 +1,9 @@
-from tests.db_utils import TestDBCursor
-from tests.profile_utils import exec_time_profiler
+# from utils.profilers import exec_time_profiler
+
+from tests.query_case_list_orders_count_per_user import bq_list_orders_count_per_user, sf_list_orders_count_per_user
+from tests.query_case_list_orders_count_per_user_and_yearmonth import bq_list_orders_count_per_user_and_yearmonth, sf_list_orders_count_per_user_and_yearmonth
+from tests.query_case_list_top5_users_purchased_most_products import bq_list_top5_users_purchased_most_products, sf_list_top5_users_purchased_most_products
+from tests.query_case_find_orders_amount_exceeding_999 import bq_find_orders_amount_exceeding_999, sf_find_orders_amount_exceeding_999
 
 
 # Set up the table before running the tests
@@ -14,53 +18,38 @@ from tests.profile_utils import exec_time_profiler
 #     yield
 #     cleanup_test_database()
 
-@exec_time_profiler
-def test_orders_count_per_user():
-    with TestDBCursor() as cursor:
-        query = """
-            SELECT
-                u.user_id,
-                u.username,
-                COUNT(o.order_id) AS total_orders
-            FROM
-                users u
-            LEFT JOIN
-                orders o ON u.user_id = o.user_id
-            GROUP BY
-                u.user_id, u.username
-            ORDER BY
-                total_orders DESC;
-        """
-        cursor.execute(query)
-        result = cursor.fetchall()
-        assert len(result) > 0, "No results returned."
+
+# Test Case: list_orders_count_per_user
+def test_sf_list_orders_count_per_user(benchmark):
+    benchmark(sf_list_orders_count_per_user)
 
 
-@exec_time_profiler
-def test_orders_count_per_user_and_yearmonth():
-    with TestDBCursor() as cursor:
-        cursor.execute("""
-            SELECT DISTINCT EXTRACT(YEAR FROM order_time) || '-' || LPAD(EXTRACT(MONTH FROM order_time), 2, '0') AS year_month
-            FROM orders
-            ORDER BY year_month
-        """)
-        year_months = [row[0] for row in cursor.fetchall()]
+def test_bq_list_orders_count_per_user(benchmark):
+    benchmark(bq_list_orders_count_per_user)
 
-        # Construct the PIVOT query dynamically
-        pivot_query = f"""
-            SELECT * FROM (
-                SELECT user_id,
-                    EXTRACT(YEAR FROM order_time) || '-' || LPAD(EXTRACT(MONTH FROM order_time), 2, '0') AS year_month
-                FROM orders
-            )
-            PIVOT (
-                COUNT(year_month)
-                FOR year_month IN ({', '.join(["'" + ym + "'" for ym in year_months])})
-            )
-            ORDER BY user_id;
-        """
 
-        # Execute the PIVOT query
-        cursor.execute(pivot_query)
-        results = cursor.fetchall()
-        assert len(results) > 0, "No results returned."
+# Test Case: list_orders_count_per_user_and_yearmonth
+def test_sf_orders_count_per_user_and_yearmonth(benchmark):
+    benchmark(sf_list_orders_count_per_user_and_yearmonth)
+
+
+def test_bq_orders_count_per_user_and_yearmonth(benchmark):
+    benchmark(bq_list_orders_count_per_user_and_yearmonth)
+
+
+# Test Case: list_top5_users_purchased_most_products
+def test_sf_list_top5_users_purchased_most_products(benchmark):
+    benchmark(sf_list_top5_users_purchased_most_products)
+
+
+def test_bq_list_top5_users_purchased_most_products(benchmark):
+    benchmark(bq_list_top5_users_purchased_most_products)
+
+
+# # Test Case: find_orders_amount_exceeding_999
+def test_sf_find_orders_amount_exceeding_999(benchmark):
+    benchmark(sf_find_orders_amount_exceeding_999)
+
+
+def test_bq_find_orders_amount_exceeding_999(benchmark):
+    benchmark(bq_find_orders_amount_exceeding_999)

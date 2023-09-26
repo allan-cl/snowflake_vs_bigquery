@@ -1,17 +1,66 @@
-# snowflake_vs_bigquery
+## Table of Contents
 
-## Snowflake
-
-python client: https://github.com/snowflakedb/snowflake-connector-python
-
-### Introduction
-Snowflake is a cloud-based data platform offering a transformative approach to data warehousing and data lakes. It's a **Data Warehouse-as-a-service**, and designed to be easy to use, scalable, and able to handle both structured and semi-structured data. The pillars of snowflake are major cloud platforms, such as AWS, Azure, and Google Cloud Platform.
-
-### Core Architecture
-- Decoupled Storage and Compute: Snowflake separates its storage and compute resources, allowing them to scale independently. This ensures that organizations can allocate resources based on their specific needs.
-- Virtual Warehouses: Snowflake uses the concept of virtual warehouses (compute clusters) to handle query processing. Multiple virtual warehouses can operate concurrently without contention.
-- Automatic Optimization: Snowflake automatically manages aspects like data distribution, metadata, and query optimization?, eliminating the need for manual tuning.
+- [Setup](#setup)
+- [Tests](#tests)
+- [Reports](#reports)
 
 
+
+## Setup
+1. Install Miniconda
+macOS and Linux:
+Run the following commands in your terminal:
+```bash
+# macOS
+curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+
+# Linux
+curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
+# Install
+bash Miniconda3-latest-*-x86_64.sh
+```
+Follow the prompts in the installer. Remember to restart your terminal or run source ~/.bashrc (or equivalent for your shell) after installation.
+
+2. Create a Conda Environment and activate it
+```bash
+conda create --name sf_vs_bq python=3.8
+conda activate sf_vs_bq
+```
+
+3. Install Required Libraries
+Navigate to the project directory and run:
+```bash
+pip install -r requirements.txt
+```
+
+## Tests
+To run the tests for this project:
+```bash
+# Run setup tests
+pytest tests/test_atc_setup.py --html=reports/test_atc_setup.html --benchmark-histogram=reports/test_atc_setup
+
+# Run insert tests
+pytest tests/test_atc_insert.py --html=reports/test_atc_insert.html
+
+# Run query tests
+pytest tests/test_atc_query.py --html=reports/test_atc_query.html --benchmark-histogram=reports/test_atc_query
+```
+
+## Reports
+
+### Setup Tests
+
+Click [HTML Report](./reports/test_atc_setup.html)
+
+<img src="reports/test_atc_setup.svg" alt="test_atc_setup" width="600"/>
+
+### Insert Tests
+Click [HTML Report](./reports/test_atc_setup.html)
+
+### Query Tests
+Click [HTML Report](./reports/test_atc_query.html)
+
+<img src="reports/test_atc_query.svg" alt="test_atc_query" width="600"/>
 
 

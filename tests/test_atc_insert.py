@@ -1,16 +1,21 @@
-import random
-import uuid
-from datetime import datetime, timedelta
+import pytest
 
-from tests.db_utils import TestDBCursor
-from tests.profile_utils import exec_time_profiler
+from utils.profilers import exec_time_profiler
+from clients.sfclient import SnowflakeClient
+from clients.bqclient import BigQueryClient
+
+sf_client = SnowflakeClient()
+bq_client = BigQueryClient()
 
 
 # Set up the table before running the tests
 # @pytest.fixture(scope="module", autouse=True)
 # def setup_module():
-#     # conn = get_connection()
-#     pass
+#     sf_client.create_database()
+#     sf_client.create_users_table()
+
+#     bq_client.create_dataset()
+#     bq_client.create_users_table()
 
 
 # @pytest.fixture(scope="session", autouse=True)
@@ -18,30 +23,18 @@ from tests.profile_utils import exec_time_profiler
 #     yield
 #     cleanup_test_database()
 
-@exec_time_profiler
-def test_insert_data():
-    user_count = 10_000
-    order_count_per_user = 100
-    with TestDBCursor() as cursor:
-        chunk_size = 16384
 
-        users_data: list[str] = [(f'{i+1:0>36}', f'user{i+1:0>9}', f'user{i+1:0>9}@example.com') for i in range(user_count)]
-        users_data_chunks = [users_data[i:i + chunk_size] for i in range(0, len(users_data), chunk_size)]
-        cursor.executemany(
-            command="INSERT INTO users (user_id, username, email) values (%s, %s, %s)",
-            seqparams=users_data)
+def test_sf_insert_users_data():
+    sf_client.insert_users_data()
 
-        orders_data = []
-        for idx in range(user_count):
-            user_id = f'{idx+1:0>36}'
-            for _ in range(order_count_per_user):
-                orders_data.append((str(uuid.uuid4()),
-                                    user_id,
-                                    f"product_{random.randint(a=1, b=100)}",
-                                    random.randint(a=1, b=1000),
-                                    datetime.now() - timedelta(days=random.randint(a=1, b=365))))
-        orders_data_chunks = [orders_data[i:i + chunk_size] for i in range(0, len(orders_data), chunk_size)]
-        for orders_data_chunk in orders_data_chunks:
-            cursor.executemany(
-                command="INSERT INTO orders (order_id, user_id, product, amount, order_time) values (%s, %s, %s, %s, %s)",
-                seqparams=orders_data_chunk)
+
+def test_sf_insert_orders_data():
+    sf_client.insert_orders_data()
+
+
+def test_bq_insert_users_data():
+    bq_client.insert_users_data()
+
+
+def test_bq_insert_orders_data():
+    bq_client.insert_orders_data()
