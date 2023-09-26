@@ -14,8 +14,9 @@
 | **Security & Compliance** | Snowflake has its security infrastructure which can be integrated across different cloud providers.| BigQuery seamlessly integrates with Google Cloud's security model.| Both prioritize security with features like encryption at rest and in transit, and role-based access control. Both platforms are compliant with major regulatory standards.|
 | **Development & Ecosystem** | Snowflake, being multi-cloud, integrates with services across various cloud providers. | BigQuery is deeply integrated with the Google Cloud ecosystem, benefiting from Google services. |Both platforms are compatible with popular BI tools. Both have a rich set of APIs and SDKs for development and integration.|
 
-
+```
 In summary, while Snowflake and BigQuery share several similarities in terms of their overarching goals and some functionalities, their approaches, architectures, and integrations reflect their unique design philosophies and the ecosystems they cater to. The choice between them often depends on specific organizational needs and existing tech infrastructure.
+```
 
 ## Setup
 1. Install Miniconda
