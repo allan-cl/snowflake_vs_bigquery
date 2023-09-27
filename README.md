@@ -47,16 +47,69 @@ pip install -r requirements.txt
 ```
 
 ## Tests
+
+### Test tables
+
+```Users```
+- schema
+
+| Column Name | Date type | Constrains |
+|:---------:|---------|---------|
+| user_id | STRING | PK |
+| username | STRING |  |
+| email | STRING |  |
+
+- Number of rows: 10,000
+- Source Data:
+    - [Pickle](https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/data/faker_users.pkl)
+    - [CSV](https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/data/faker_users.csv)
+
+
+``` Orders ```
+- schema
+
+| Column Name | Date type | Constrains |
+|:---------:|---------|---------|
+| order_id | STRING | PK |
+| user_id | STRING | FK |
+| product | STRING |  |
+| amount | STRING |  |
+| order_time | TIMESTAMP |  |
+
+
+- Number of rows: 504,106
+- Source Data:
+    - [Pickle](https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/data/faker_users.pkl)
+    - [CSV](https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/data/faker_users.csv)
+
+Fake Data Generator: https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/data/datafaker.py
+
+
 ### Run tests
 To run the tests for this project:
 ```bash
-# Run setup tests
+# Run SETUP tests
+#
+# Test Cases on BOTH Datahouses
+# 1. create dataset
+# 2. create users table
+# 3. create orders table
 pytest tests/test_atc_setup.py --html=reports/test_atc_setup.html --benchmark-histogram=reports/test_atc_setup
 
-# Run insert tests
+# Run INSERT tests
+#
+# Test Cases on BOTH Datahouses
+# 1. insert users table
+# 2. insert orders table
 pytest tests/test_atc_insert.py --html=reports/test_atc_insert.html
 
-# Run query tests
+# Run QUERY tests
+#
+# Test Cases on BOTH Datahouses
+# 1. List the number of orders for each user by month and year
+# 2. Count of orders per user
+# 3. Find orders that amount execeeding 999
+# 4. Find top 5 users purchased most products
 pytest tests/test_atc_query.py --html=reports/test_atc_query.html --benchmark-histogram=reports/test_atc_query
 ```
 
@@ -75,3 +128,6 @@ Click [HTML Report](https://htmlpreview.github.io/?https://github.com/allan-cl/s
 Click [HTML Report](https://htmlpreview.github.io/?https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/reports/test_atc_query.html)
 
 <img src="reports/test_atc_query.svg" alt="test_atc_query" width="600"/>
+
+
+### Conclusion
