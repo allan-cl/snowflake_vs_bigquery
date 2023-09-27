@@ -90,7 +90,7 @@ To run the tests for this project:
 ```bash
 # Run SETUP tests
 #
-# Test Cases on BOTH Datahouses
+# Test Cases on BOTH Data Warehouses
 # 1. create dataset
 # 2. create users table
 # 3. create orders table
@@ -98,14 +98,14 @@ pytest tests/test_atc_setup.py --html=reports/test_atc_setup.html --benchmark-hi
 
 # Run INSERT tests
 #
-# Test Cases on BOTH Datahouses
+# Test Cases on BOTH Data Warehouses
 # 1. insert users table
 # 2. insert orders table
 pytest tests/test_atc_insert.py --html=reports/test_atc_insert.html
 
 # Run QUERY tests
 #
-# Test Cases on BOTH Datahouses
+# Test Cases on BOTH Data Warehouses
 # 1. List the number of orders for each user by month and year
 # 2. Count of orders per user
 # 3. Find orders that amount execeeding 999
