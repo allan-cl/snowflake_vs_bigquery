@@ -117,12 +117,12 @@ pytest tests/test_atc_query.py --html=reports/test_atc_query.html --benchmark-hi
 
 #### Setup Tests
 
-Click [HTML Report](https://htmlpreview.github.io/?https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/reports/test_atc_query.html)
+Click [HTML Report](https://htmlpreview.github.io/?https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/reports/test_atc_setup.html)
 
 <img src="reports/test_atc_setup.svg" alt="test_atc_setup" width="600"/>
 
 #### Insert Tests
-Click [HTML Report](https://htmlpreview.github.io/?https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/reports/test_atc_setup.html)
+Click [HTML Report](https://htmlpreview.github.io/?https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/reports/test_atc_insert.html)
 
 #### Query Tests
 Click [HTML Report](https://htmlpreview.github.io/?https://github.com/allan-cl/snowflake_vs_bigquery/blob/main/reports/test_atc_query.html)
